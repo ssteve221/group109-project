@@ -13,6 +13,9 @@ const cases = [
   { flow: "order_status", input: "NS10024", expectContains: "being prepared", desc: "processing order returns prep status + estimated delivery" },
   { flow: "order_status", input: "NS10025", expectContains: "delivered", desc: "delivered order returns delivery date" },
   { flow: "order_status", input: "NS10026", expectContains: "delayed", desc: "delayed order surfaces delay reason" },
+  { flow: "order_status", input: "NS10032", expectContains: "cancelled", desc: "cancelled order under order-status flow" },
+  { flow: "returns", input: "NS99999", expectContains: "couldn't find", desc: "unknown order ID under returns flow" },
+  { flow: "returns", input: "NS10035", expectContains: "past our", desc: "boundary: delivered 33 days ago, just past window" },
   // Order Status — edge cases
   { flow: "order_status", input: "ns10023", expectContains: "shipped", desc: "lowercase order ID still resolves (case-insensitive)" },
   { flow: "order_status", input: "NS99999", expectContains: "couldn't find", desc: "unknown order ID handled gracefully, no crash" },
