@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Northstar Support — Self-Serve</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0B0F1A;
+    --surface: #131A2B;
+    --surface-raised: #1B2438;
+    --border: #26314A;
+    --accent-star: #E8A33D;
+    --accent-resolve: #5FD1B8;
+    --text-primary: #F3F1E7;
+    --text-muted: #8592AB;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at top, #101729 0%, var(--bg-deep) 60%);
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .widget {
+    width: 100%;
+    max-width: 440px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    height: 640px;
+  }
+
+  .header {
+    padding: 20px 22px 18px;
+    background:
+      radial-gradient(1px 1px at 20px 15px, rgba(232,163,61,0.6), transparent),
+      radial-gradient(1px 1px at 70px 30px, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 130px 12px, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 180px 28px, rgba(232,163,61,0.5), transparent),
+      radial-gradient(1px 1px at 260px 18px, rgba(255,255,255,0.35), transparent),
+      linear-gradient(180deg, #16203A 0%, var(--surface) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand svg { flex-shrink: 0; }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.01em;
+  }
+
+  .brand-sub {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .msg {
+    max-width: 84%;
+    padding: 11px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    animation: rise 0.25s ease;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.bot {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+
+  .msg.user {
+    background: var(--accent-star);
+    color: #241704;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    font-weight: 500;
+  }
+
+  .msg .order-id { font-family: var(--font-mono); font-weight: 500; }
+
+  .resolved-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: var(--accent-resolve);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .resolved-tag svg {
+    animation: lockon 0.5s ease-out;
+  }
+
+  @keyframes lockon {
+    from { stroke-dashoffset: 40; opacity: 0; transform: scale(0.6); }
+    to { stroke-dashoffset: 0; opacity: 1; transform: scale(1); }
+  }
+
+  .chips {
+    display: flex;
+    gap: 8px;
+    padding: 0 18px 14px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    padding: 7px 12px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .chip:hover { border-color: var(--accent-star); transform: translateY(-1px); }
+
+  .input-row {
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .input-row input {
+    flex: 1;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 13px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+  }
+
+  .input-row input:focus {
+    outline: none;
+    border-color: var(--accent-star);
+  }
+
+  .input-row button {
+    background: var(--accent-star);
+    border: none;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: #241704;
+    cursor: pointer;
+  }
+
+  .input-row button:focus-visible,
+  .chip:focus-visible {
+    outline: 2px solid var(--accent-resolve);
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="widget" role="region" aria-label="Northstar support chat">
+  <div class="header">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M13 1 L15.2 10.3 L24.5 13 L15.2 15.7 L13 25 L10.8 15.7 L1.5 13 L10.8 10.3 Z" fill="#E8A33D"/>
+      </svg>
+      <div>
+        <div class="brand-name">Northstar Support</div>
+        <div class="brand-sub">Ask about an order — no ticket needed</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="messages" id="messages" aria-live="polite">
+    <div class="msg bot">
+      Hi — I can check <strong>order status</strong> or <strong>return &amp; refund</strong> questions right now.
+      What do you need?
+    </div>
+  </div>
+
+  <div class="chips" id="chips">
+    <button class="chip" data-flow="order_status">📦 Track my order</button>
+    <button class="chip" data-flow="returns">↩️ Start a return</button>
+    <button class="chip" data-flow="stock">🔍 Check stock/size</button>
+  </div>
+
+  <div class="input-row">
+    <input id="userInput" type="text" placeholder="e.g. NS10023, or 'where's my order'" aria-label="Type your question" />
+    <button id="sendBtn">Send</button>
+  </div>
+</div>
+
+<script src="data/orders.js"></script>
+<script src="lookup.js"></script>
+<script>
+  const messagesEl = document.getElementById('messages');
+  const inputEl = document.getElementById('userInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const chipsEl = document.getElementById('chips');
+
+  let activeFlow = null; // 'order_status' | 'returns' | 'stock'
+
+  function addMessage(text, sender, resolved) {
+    const el = document.createElement('div');
+    el.className = `msg ${sender}`;
+    el.innerHTML = text;
+    if (resolved) {
+      const tag = document.createElement('div');
+      tag.className = 'resolved-tag';
+      tag.innerHTML = `
+        <svg width="13" height="13" viewBox="0 0 26 26" fill="none">
+          <path d="M13 1 L15.2 10.3 L24.5 13 L15.2 15.7 L13 25 L10.8 15.7 L1.5 13 L10.8 10.3 Z"
+                fill="none" stroke="#5FD1B8" stroke-width="1.6"
+                stroke-dasharray="40" stroke-dashoffset="0"/>
+        </svg>
+        Resolved without a ticket
+      `;
+      el.appendChild(tag);
+    }
+    messagesEl.appendChild(el);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function extractOrderId(text) {
+    const match = text.match(/NS\d{4,6}/i);
+    return match ? match[0].toUpperCase() : null;
+  }
+
+  function handleFlowPrompt(flow) {
+    activeFlow = flow;
+    const prompts = {
+      order_status: "Sure — what's your order ID? (e.g. NS10023)",
+      returns: "No problem — what's the order ID for the item you'd like to return?",
+      stock: "Tell me the item and size you're checking, e.g. \"Running Shoes size 10\".",
+    };
+    addMessage(prompts[flow], 'bot');
+  }
+
+  function handleUserMessage(raw) {
+    const text = raw.trim();
+    if (!text) return;
+    addMessage(text, 'user');
+
+    // If no flow chosen yet, try to infer intent from free text
+    if (!activeFlow) {
+      const lower = text.toLowerCase();
+      if (/(return|refund)/.test(lower)) activeFlow = 'returns';
+      else if (/(stock|available|size|restock)/.test(lower)) activeFlow = 'stock';
+      else activeFlow = 'order_status';
+    }
+
+    if (activeFlow === 'stock') {
+      const res = getStockStatus(text, STOCK);
+      addMessage(res.message, 'bot', res.found);
+      activeFlow = null;
+      return;
+    }
+
+    const orderId = extractOrderId(text);
+    if (!orderId) {
+      addMessage("I need an order ID to look that up — it looks like <span class='order-id'>NS10023</span>. Where can I find it? It's in your confirmation email.", 'bot');
+      return;
+    }
+
+    const res = activeFlow === 'returns'
+      ? getReturnEligibility(orderId, ORDERS)
+      : getOrderStatus(orderId, ORDERS);
+
+    let msg = res.message;
+    if (res.trackingUrl) {
+      msg += ` <a href="${res.trackingUrl}" target="_blank" style="color:var(--accent-star)">Track package →</a>`;
+    }
+    addMessage(msg, 'bot', res.found);
+    activeFlow = null;
+  }
+
+  sendBtn.addEventListener('click', () => {
+    handleUserMessage(inputEl.value);
+    inputEl.value = '';
+  });
+
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      handleUserMessage(inputEl.value);
+      inputEl.value = '';
+    }
+  });
+
+  chipsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    handleFlowPrompt(btn.dataset.flow);
+  });
+</script>
+
+</body>
+</html>
