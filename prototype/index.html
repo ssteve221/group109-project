@@ -42,7 +42,7 @@
     border: 1px solid var(--border);
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,0.6);
     display: flex;
     flex-direction: column;
     height: 640px;
@@ -295,9 +295,13 @@
     // If no flow chosen yet, try to infer intent from free text
     if (!activeFlow) {
       const lower = text.toLowerCase();
-      if (/(return|refund)/.test(lower)) activeFlow = 'returns';
+     if (/(return|refund)/.test(lower)) activeFlow = 'returns';
       else if (/(stock|available|size|restock)/.test(lower)) activeFlow = 'stock';
-      else activeFlow = 'order_status';
+      else if (/NS\d{4,6}/i.test(text)) activeFlow = 'order_status';
+      else {
+      addMessage("I'm not sure what you need — try 'track my order', 'start a return', or give me an order ID.", 'bot');
+      return;
+}
     }
 
     if (activeFlow === 'stock') {
@@ -305,6 +309,9 @@
       addMessage(res.message, 'bot', res.found);
       activeFlow = null;
       return;
+    }
+    if (activeFlow === 'returns' && res.eligible) {
+      msg += ` <a href="#" style="color:var(--accent-star)">Start your return →</a>`;
     }
 
     const orderId = extractOrderId(text);
