@@ -16,7 +16,7 @@ function daysBetween(dateStr, ref = TODAY) {
  * @returns {object} { found, status, message, trackingUrl }
  */
 function getOrderStatus(orderId, orders = ORDERS) {
-  const id = (orderId || "").trim().toUpperCase();
+  const id = String(orderId || "").trim().toUpperCase();
   const order = orders.find((o) => o.id === id);
 
   if (!order) {
