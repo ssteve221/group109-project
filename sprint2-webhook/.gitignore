@@ -1,0 +1,22 @@
+# Go project gitignore
+
+# Compiled binaries
+northstar-server
+northstar-prototype
+kiosk-server
+
+# Go toolchain artifacts
+*.exe
+*.test
+*.out
+/bin/
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Environment files (never commit secrets)
+.env
+.env.local
